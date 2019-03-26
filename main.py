@@ -3,6 +3,12 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+# settings
+
+screen_height = 800
+screen_width = 800
+line_colour = (0, 89, 179)
+
 vertices = (
     (1, -1, -1),
     (1, 1, -1),
@@ -29,12 +35,13 @@ def draw_pyramid():
     for edge in edges:
         for vertex in edge:
             glVertex3fv(vertices[vertex])
+            glColor3f(0, 0, 1)
     glEnd()
 
 
 def main():
     pygame.init()
-    display = (800, 800)
+    display = (screen_height, screen_width)
     # set pygame up for 3d graphics
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
@@ -51,3 +58,10 @@ def main():
                 pygame.quit()
                 quit()
 
+        glRotatef(2, 1, 1, 3)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        draw_pyramid()
+        pygame.display.flip()
+
+
+main()
