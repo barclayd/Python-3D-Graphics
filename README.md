@@ -4,5 +4,6 @@
 
 ### Future Improvements
 
+* Moving in a 3D environment
 * Ability to move 3D objects using mouse or arrow keys
 * Colour 3D objects
