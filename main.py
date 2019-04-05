@@ -9,34 +9,39 @@ screen_height = 800
 screen_width = 800
 line_colour = (0, 89, 179)
 
-vertices = (
-    (1, -1, -1),
-    (1, 1, -1),
-    (-1, 1, -1),
-    (-1, -1, -1),
-    (0, 0, 1)
-)
 
-edges = (
-    (0, 1),
-    (0, 3),
-    (0, 4),
-    (1, 4),
-    (1, 2),
-    (2, 4),
-    (2, 3),
-    (3, 4)
-)
+class Pyramid:
+    vertices = (
+        (1, -1, -1),
+        (1, 1, -1),
+        (-1, 1, -1),
+        (-1, -1, -1),
+        (0, 0, 1)
+    )
 
+    edges = (
+        (0, 1),
+        (0, 3),
+        (0, 4),
+        (1, 4),
+        (1, 2),
+        (2, 4),
+        (2, 3),
+        (3, 4)
+    )
 
-def draw_pyramid():
-    glLineWidth(5)
-    glBegin(GL_LINES)
-    for edge in edges:
-        for vertex in edge:
-            glVertex3fv(vertices[vertex])
-            glColor3f(0, 0, 1)
-    glEnd()
+    def __init__(self):
+        self.edges = Pyramid.edges
+        self.vertices = Pyramid.vertices
+
+    def draw(self):
+        glLineWidth(5)
+        glBegin(GL_LINES)
+        for edge in self.edges:
+            for vertex in edge:
+                glVertex3fv(self.vertices[vertex])
+                glColor3f(0, 0, 1)
+        glEnd()
 
 
 def main():
@@ -50,6 +55,8 @@ def main():
     # moves back along z direction
     glTranslatef(0, 0, -5)
 
+    p = Pyramid()
+
     clock = pygame.time.Clock()
     while True:
         clock.tick(60)
@@ -60,7 +67,7 @@ def main():
 
         glRotatef(2, 1, 1, 3)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        draw_pyramid()
+        p.draw()
         pygame.display.flip()
 
 
