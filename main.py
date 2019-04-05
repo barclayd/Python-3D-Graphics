@@ -50,12 +50,14 @@ def main():
     # set pygame up for 3d graphics
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-    gluPerspective(45, (display[0]/display[1]), 0.1, 50)
+    gluPerspective(90, (display[0]/display[1]), 0.1, 50)
 
     # moves back along z direction
     glTranslatef(0, 0, -5)
 
     p = Pyramid()
+
+    velocity = 0.1
 
     clock = pygame.time.Clock()
     while True:
@@ -65,7 +67,20 @@ def main():
                 pygame.quit()
                 quit()
 
-        glRotatef(2, 1, 1, 3)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            glTranslatef(-velocity, 0, 0)
+        if keys[pygame.K_b]:
+            glTranslatef(velocity, 0, 0)
+        if keys[pygame.K_UP]:
+            glTranslatef(0, velocity, 0)
+        if keys[pygame.K_DOWN]:
+            glTranslatef(0, -velocity, 0)
+        if keys[pygame.K_w]:
+            glTranslatef(0, 0, -velocity)
+        if keys[pygame.K_s]:
+            glTranslatef(0, -0, velocity)
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         p.draw()
         pygame.display.flip()
