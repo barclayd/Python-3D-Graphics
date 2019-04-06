@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import numpy
 
 # settings
 
@@ -11,13 +12,13 @@ line_colour = (0, 89, 179)
 
 
 class Pyramid:
-    vertices = (
-        (1, -1, -1),
-        (1, 1, -1),
-        (-1, 1, -1),
-        (-1, -1, -1),
-        (0, 0, 1)
-    )
+    vertices = [
+        [1, -1, -1],
+        [1, -1, 1],
+        [-1, -1, 1],
+        [-1, -1, -1],
+        [0, 1, 0]
+    ]
 
     edges = (
         (0, 1),
@@ -30,9 +31,9 @@ class Pyramid:
         (3, 4)
     )
 
-    def __init__(self):
+    def __init__(self, scale = 1):
         self.edges = Pyramid.edges
-        self.vertices = Pyramid.vertices
+        self.vertices = list(numpy.multiply(numpy.array(Pyramid.vertices), scale))
 
     def draw(self):
         glLineWidth(5)
@@ -43,6 +44,9 @@ class Pyramid:
                 glColor3f(0, 0, 1)
         glEnd()
 
+    def move(self, x, y, z):
+        self.vertices = list(map(lambda  vertex: (vertex[0] + x, vertex[1] + y, vertex[2] + z), self.vertices))
+
 
 def main():
     pygame.init()
@@ -50,36 +54,42 @@ def main():
     # set pygame up for 3d graphics
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-    gluPerspective(90, (display[0]/display[1]), 0.1, 50)
+    gluPerspective(45, (display[0]/display[1]), 0.1, 50)
 
     # moves back along z direction
-    glTranslatef(0, 0, -5)
+    glTranslatef(0, 0, -20)
 
-    p = Pyramid()
+    p = Pyramid(2)
 
     velocity = 0.1
 
     clock = pygame.time.Clock()
     while True:
         clock.tick(60)
+        # continually rotate pyramid
+        glRotatef(velocity * 10, 0, 1, 0)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            glTranslatef(-velocity, 0, 0)
-        if keys[pygame.K_b]:
-            glTranslatef(velocity, 0, 0)
+        if keys[pygame.K_LEFT]:
+            p.move(-velocity, 0, 0)
+        if keys[pygame.K_RIGHT]:
+            p.move(velocity, 0, 0)
         if keys[pygame.K_UP]:
-            glTranslatef(0, velocity, 0)
+            p.move(0, velocity, 0)
         if keys[pygame.K_DOWN]:
-            glTranslatef(0, -velocity, 0)
+            p.move(0, -velocity, 0)
         if keys[pygame.K_w]:
-            glTranslatef(0, 0, -velocity)
+            p.move(0, 0, velocity)
         if keys[pygame.K_s]:
-            glTranslatef(0, -0, velocity)
+            p.move(0, 0, -velocity)
+        if keys[pygame.K_a]:
+            glRotatef(-velocity*10, 0, 1, 0)
+        if keys[pygame.K_d]:
+            glRotatef(velocity*10, 0, 1, 0)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         p.draw()
