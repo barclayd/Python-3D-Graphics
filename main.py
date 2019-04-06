@@ -12,6 +12,7 @@ line_colour = (0, 89, 179)
 
 
 class Pyramid:
+
     vertices = [
         [1, -1, -1],
         [1, -1, 1],
@@ -31,21 +32,38 @@ class Pyramid:
         (3, 4)
     )
 
+    surfaces = (
+        (1, 2, 4),
+        (0, 1, 2, 3),
+        (0, 1, 4),
+        (2, 3, 4)
+    )
+
     def __init__(self, scale = 1):
         self.edges = Pyramid.edges
         self.vertices = list(numpy.multiply(numpy.array(Pyramid.vertices), scale))
+        self.surfaces = Pyramid.surfaces
 
     def draw(self):
+        self.fill_sides()
         glLineWidth(5)
         glBegin(GL_LINES)
         for edge in self.edges:
             for vertex in edge:
-                glVertex3fv(self.vertices[vertex])
                 glColor3f(0, 0, 1)
+                glVertex3fv(self.vertices[vertex])
         glEnd()
 
     def move(self, x, y, z):
-        self.vertices = list(map(lambda  vertex: (vertex[0] + x, vertex[1] + y, vertex[2] + z), self.vertices))
+        self.vertices = list(map(lambda vertex: (vertex[0] + x, vertex[1] + y, vertex[2] + z), self.vertices))
+
+    def fill_sides(self):
+        glBegin(GL_QUADS)
+        for surface in self.surfaces:
+            for vertex in surface:
+                glColor3f(1, 0, 0)
+                glVertex3fv(self.vertices[vertex])
+        glEnd()
 
 
 def main():
@@ -58,6 +76,9 @@ def main():
 
     # moves back along z direction
     glTranslatef(0, 0, -20)
+
+    # draw pyramid as a solid object
+    glEnable(GL_DEPTH_TEST)
 
     p = Pyramid(2)
 
