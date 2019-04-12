@@ -8,7 +8,7 @@ import numpy
 
 screen_height = 800
 screen_width = 800
-line_colour = (0, 89, 179)
+line_colour = (0, 0, 205)
 
 
 class Pyramid:
@@ -39,7 +39,7 @@ class Pyramid:
         (2, 3, 4)
     )
 
-    def __init__(self, scale = 1):
+    def __init__(self, scale=1):
         self.edges = Pyramid.edges
         self.vertices = list(numpy.multiply(numpy.array(Pyramid.vertices), scale))
         self.surfaces = Pyramid.surfaces
@@ -61,7 +61,7 @@ class Pyramid:
         glBegin(GL_QUADS)
         for surface in self.surfaces:
             for vertex in surface:
-                glColor3f(1, 0, 0)
+                glColor3f(1, 0.482, 0)
                 glVertex3fv(self.vertices[vertex])
         glEnd()
 
