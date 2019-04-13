@@ -1,6 +1,6 @@
 # Python 3D Graphics
 
-3D Graphics using Python using PyOpenGL.
+3D Graphics using Python and PyOpenGL.
 
 ### Demo
 
