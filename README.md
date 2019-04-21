@@ -17,7 +17,7 @@
 ### How to Run
 
 ```
-$ git clone https://github.com/barclayd/Python-3D-Graphics
+$ git clone https://github.com/barclayd/Python-3D-Graphics.git
 $ cd Python-3D-Graphics
 $ python main.py
 ```
